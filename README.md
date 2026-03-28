@@ -31,6 +31,34 @@ pattern = r"\d{3}-\d{2}-\d{4}"
 # 不推荐（容易出错且难读）
 pattern = "\\d{3}-\\d{2}-\\d{4}"
 ```
+### b开头的内容
+Python对bytes类型的数据用带b前缀的单引号或双引号表示：  
+x = b'ABC'  
+要注意区分'ABC'和b'ABC'，前者是str，后者虽然内容显示得和前者一样，但bytes的每个字符都只占用一个字节。  
+以Unicode表示的str通过encode()方法可以编码为指定的bytes，例如：    
+'ABC'.encode('ascii')  
+b'ABC'  
+'中文'.encode('utf-8')  
+b'\xe4\xb8\xad\xe6\x96\x87'  
+'中文'.encode('ascii')  
+Traceback (most recent call last):  
+  File "<stdin>", line 1, in <module>  
+UnicodeEncodeError: 'ascii' codec can't encode characters in position 0-1: ordinal not in range(128)  
+纯英文的str可以用ASCII编码为bytes，内容是一样的，含有中文的str可以用UTF-8编码为bytes。含有中文的str无法用ASCII编码，因为中文编码的范围超过了ASCII编码的范围，Python会报错。  
+在bytes中，无法显示为ASCII字符的字节，用\x##显示。  
+反过来，如果我们从网络或磁盘上读取了字节流，那么读到的数据就是bytes。要把bytes变为str，就需要用decode()方法：  
+b'ABC'.decode('ascii')  
+'ABC'  
+b'\xe4\xb8\xad\xe6\x96\x87'.decode('utf-8')  
+'中文'  
+如果bytes中包含无法解码的字节，decode()方法会报错：  
+b'\xe4\xb8\xad\xff'.decode('utf-8')  
+Traceback (most recent call last):  
+  ...  
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 3: invalid start byte  
+如果bytes中只有一小部分无效的字节，可以传入errors='ignore'忽略错误的字节：  
+b'\xe4\xb8\xad\xff'.decode('utf-8', errors='ignore')  
+'中'  
 ## 零碎知识
 1. 在Python中，通常用全部大写的变量名表示常量：  
 PI = 3.14159265359  
@@ -43,4 +71,12 @@ PI = 3.14159265359
 3.0  
 还有一种除法是//，称为地板除，两个整数的除法仍然是整数：  
 10 // 3  
-3
+3  
+3. Python的整数没有大小限制，而某些语言的整数根据其存储长度是有大小限制的，例如Java对32位整数的范围限制在-2147483648-2147483647
+4. ord()函数获取字符的整数表示，chr()函数把编码转换为对应的字符
+```
+ord('中')  
+20013  
+chr(66)  
+'B'
+```

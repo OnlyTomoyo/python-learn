@@ -80,3 +80,19 @@ ord('中')
 chr(66)  
 'B'
 ```
+5. len()函数计算的是str的字符数，如果换成bytes，len()函数就计算字节数：  
+len(b'ABC')  
+3  
+len(b'\xe4\xb8\xad\xe6\x96\x87')  
+6  
+len('中文'.encode('utf-8'))  
+6. 当Python解释器读取源代码时，为了让它按UTF-8编码读取，我们通常在文件开头写上这两行：
+#!/usr/bin/env python3  
+# -*- coding: utf-8 -*-  
+7. 在Python中，采用的格式化方式和C语言是一致的，用%实现，举例如下：
+```
+'Hello, %s' % 'world'  
+'Hello, world'  
+'Hi, %s, you have $%d.' % ('Michael', 1000000)
+'Hi, Michael, you have $1000000.'
+```

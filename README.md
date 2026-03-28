@@ -59,6 +59,30 @@ UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 3: invalid 
 如果bytes中只有一小部分无效的字节，可以传入errors='ignore'忽略错误的字节：  
 b'\xe4\xb8\xad\xff'.decode('utf-8', errors='ignore')  
 '中'  
+### 格式化
+8.
+1. 在Python中，采用的格式化方式和C语言是一致的，用%实现，举例如下：
+```
+'Hello, %s' % 'world'  
+'Hello, world'  
+'Hi, %s, you have $%d.' % ('Michael', 1000000)
+'Hi, Michael, you have $1000000.'
+```
+%运算符就是用来格式化字符串的。在字符串内部，%s表示用字符串替换，%d表示用整数替换，有几个%?占位符，后面就跟几个变量或者值，顺序要对应好。如果只有一个%?，括号可以省略。
+2. format()  
+另一种格式化字符串的方法是使用字符串的format()方法，它会用传入的参数依次替换字符串内的占位符{0}、{1}……，不过这种方式写起来比%要麻烦得多：
+```
+'Hello, {0}, 成绩提升了 {1:.1f}%'.format('小明', 17.125)
+'Hello, 小明, 成绩提升了 17.1%'
+```
+3. f-string
+最后一种格式化字符串的方法是使用以f开头的字符串，称之为f-string，它和普通字符串不同之处在于，字符串如果包含{xxx}，就会以对应的变量替换：
+```
+>>> r = 2.5
+>>> s = 3.14 * r ** 2
+>>> print(f'The area of a circle with radius {r} is {s:.2f}')
+The area of a circle with radius 2.5 is 19.62
+```
 ## 零碎知识
 1. 在Python中，通常用全部大写的变量名表示常量：  
 PI = 3.14159265359  
@@ -87,12 +111,5 @@ len(b'\xe4\xb8\xad\xe6\x96\x87')
 6  
 len('中文'.encode('utf-8'))  
 6. 当Python解释器读取源代码时，为了让它按UTF-8编码读取，我们通常在文件开头写上这两行：
-#!/usr/bin/env python3  
-# -*- coding: utf-8 -*-  
-7. 在Python中，采用的格式化方式和C语言是一致的，用%实现，举例如下：
-```
-'Hello, %s' % 'world'  
-'Hello, world'  
-'Hi, %s, you have $%d.' % ('Michael', 1000000)
-'Hi, Michael, you have $1000000.'
-```
+#!/usr/bin/env python3
+#(空格)-*- coding: utf-8 -*-  
